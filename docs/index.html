@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Decrypting...</title>
+</head>
+<body>
+Decrypting...
+</body>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"
+    integrity="sha512-a+SUDuwNzXDvz4XrIcXHuCf089/iJAoN4lmrXJg18XnduKK6YlDHNRalv4yd1N40OKI80tFidF+rqTFKGPoWFQ=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+></script>
+<script>
+    function write(content) {
+        document.open();
+        document.write(content);
+        document.close();
+    }
+
+    function handleError(error) {
+        console.error(error);
+        write(`Decryption error: ${error}`);
+    }
+
+    async function decrypt(hash) {
+        const [file, password] = hash.slice(1).split('-');
+
+        const response = await fetch(`${file}.b64`, {cache: "no-store"});
+        const data = await response.text();
+        write(CryptoJS.AES.decrypt(data, password).toString(CryptoJS.enc.Utf8));
+
+        localStorage.setItem('private-hosting-hash', hash);
+    }
+
+    decrypt(location.hash).catch(() => decrypt(localStorage.getItem('private-hosting-hash'))).catch(handleError);
+</script>
+</html>
