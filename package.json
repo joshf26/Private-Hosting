@@ -1,0 +1,9 @@
+{
+    "name": "private-hosting",
+    "version": "1.0.0",
+    "main": "index.js",
+    "dependencies": {
+        "crypto-js": "^4.2.0"
+    },
+    "type": "module"
+}
